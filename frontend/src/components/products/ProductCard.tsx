@@ -77,11 +77,6 @@ export default function ProductCard({ id, title, price, description, category, i
             {title}
           </Card.Title>
           
-          <div className="d-flex align-items-center gap-1 text-warning mb-2">
-            {[...Array(4)].map((_, i) => <Star key={i} size={10} fill="currentColor" />)}
-            <Star size={10} className="text-muted" />
-          </div>
-          
           <div className="fs-4 fw-bold mb-3" style={{ color: '#111' }}>
             ${price.toFixed(2)}
           </div>

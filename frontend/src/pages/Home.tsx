@@ -3,6 +3,7 @@ import { Container, Row, Col, Spinner, Alert, Form, InputGroup } from 'react-boo
 import { Search, Filter } from 'lucide-react';
 import Button from 'react-bootstrap/Button';
 import ProductCard from '../components/products/ProductCard'; 
+import { useAuth } from '../hooks/useAuth';
 
 interface Product {
   id: number;
