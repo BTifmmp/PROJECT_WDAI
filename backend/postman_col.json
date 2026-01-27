@@ -1,0 +1,205 @@
+{
+	"info": {
+		"name": "Sklep Flask API - Full Fix",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Rejestracja",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"nowy_user\",\n    \"password\": \"haslo123\"\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": "http://127.0.0.1:5000/api/auth/register"
+					}
+				},
+				{
+					"name": "Logowanie",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.globals.set(\"token\", jsonData.access_token);",
+									"pm.globals.set(\"refresh_token\", jsonData.refresh_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin123\"\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": "http://127.0.0.1:5000/api/auth/login"
+					}
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{refresh_token}}",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:5000/api/auth/refresh"
+					}
+				}
+			]
+		},
+		{
+			"name": "Produkty",
+			"item": [
+				{
+					"name": "Wszystkie produkty",
+					"request": {
+						"method": "GET",
+						"url": "http://127.0.0.1:5000/api/products/"
+					}
+				},
+				{
+					"name": "Jeden produkt",
+					"request": {
+						"method": "GET",
+						"url": "http://127.0.0.1:5000/api/products/1"
+					}
+				},
+				{
+					"name": "Pobierz opinie",
+					"request": {
+						"method": "GET",
+						"url": "http://127.0.0.1:5000/api/products/1/reviews"
+					}
+				},
+				{
+					"name": "Dodaj opinie",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "POST",
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rating\": 5,\n    \"content\": \"Super jakość!\"\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": "http://127.0.0.1:5000/api/products/1/reviews"
+					}
+				}
+			]
+		},
+		{
+			"name": "Koszyk",
+			"item": [
+				{
+					"name": "Zobacz koszyk",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "GET",
+						"url": "http://127.0.0.1:5000/api/cart/"
+					}
+				},
+				{
+					"name": "Dodaj do koszyka",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "POST",
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"product_id\": 1,\n    \"quantity\": 2\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": "http://127.0.0.1:5000/api/cart/add"
+					}
+				},
+				{
+					"name": "Usuń z koszyka",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "DELETE",
+						"url": "http://127.0.0.1:5000/api/cart/remove/1"
+					}
+				}
+			]
+		},
+		{
+			"name": "Zamówienia",
+			"item": [
+				{
+					"name": "Finalizuj (Checkout)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "POST",
+						"url": "http://127.0.0.1:5000/api/orders/checkout"
+					}
+				},
+				{
+					"name": "Historia zamówień",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "GET",
+						"url": "http://127.0.0.1:5000/api/orders/"
+					}
+				}
+			]
+		},
+		{
+			"name": "Powiadomienia",
+			"item": [
+				{
+					"name": "Moje powiadomienia",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "GET",
+						"url": "http://127.0.0.1:5000/api/notifications/"
+					}
+				},
+				{
+					"name": "Oznacz jako przeczytane",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "POST",
+						"url": "http://127.0.0.1:5000/api/notifications/read/1"
+					}
+				}
+			]
+		}
+	]
+}

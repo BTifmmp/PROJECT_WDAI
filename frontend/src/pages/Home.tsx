@@ -6,11 +6,11 @@ import ProductCard from '../components/products/ProductCard';
 
 interface Product {
   id: number;
-  title: string;
+  name: string;
   price: number;
   description: string;
   category: string;
-  image: string;
+  image_url: string;
 }
 
 export default function Home() {
@@ -23,7 +23,7 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   useEffect(() => {
-    fetch('https://fakestoreapi.com/products')
+    fetch('http://127.0.0.1:5000/api/products')
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch products');
         return res.json();
@@ -43,7 +43,7 @@ export default function Home() {
 
   // Logic to filter products based on search and category
   const filteredProducts = products.filter((product) => {
-    const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
@@ -116,11 +116,11 @@ export default function Home() {
             <Col key={product.id}>
               <ProductCard 
                 id={product.id}
-                title={product.title}
+                title={product.name}
                 price={product.price}
                 description={product.description}
                 category={product.category}
-                image={product.image}
+                image={product.image_url}
               />
             </Col>
           ))}
