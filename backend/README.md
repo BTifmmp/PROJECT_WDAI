@@ -1,0 +1,1 @@
+najpierw pip install -r requiremnts, najlpeiej zrobic .venv - srodowisko wirtaulen pythona a potem dopiero instalowac z pip, a potem python run.py i serwer powinine dzialac, jest tez koleckja w postman
