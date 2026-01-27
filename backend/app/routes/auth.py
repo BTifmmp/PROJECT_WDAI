@@ -39,3 +39,18 @@ def login():
         "role": user.role,
         "username": user.username
     }), 200
+
+@auth_bp.route('/me', methods=['GET'])
+@jwt_required()
+def get_user():
+    # Pobieramy ID użytkownika z tokena
+    user_id = get_jwt_identity()
+    
+    # Szukamy użytkownika w bazie
+    user = db.get_or_404(User, user_id)
+    
+    return jsonify({
+        "id": user.id,
+        "username": user.username,
+        "role": user.role
+    }), 200
