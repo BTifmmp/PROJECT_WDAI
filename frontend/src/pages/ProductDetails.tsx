@@ -16,7 +16,7 @@ export default function ProductDetails() {
   const [newReview, setNewReview] = useState({ user: '', comment: '', rating: 5 });
 
   useEffect(() => {
-    fetch(`https://fakestoreapi.com/products/${id}`)
+    fetch(`http://127.0.0.1:5000/api/products/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setProduct(data);
@@ -53,7 +53,7 @@ export default function ProductDetails() {
         {/* IMAGE */}
         <Col lg={6}>
           <div className="p-4 rounded-4 border d-flex align-items-center justify-content-center bg-white" style={{ minHeight: '450px' }}>
-            <img src={product.image} alt={product.title} className="img-fluid" style={{ maxHeight: '380px', objectFit: 'contain' }} />
+            <img src={product.image_url} alt={product.name} className="img-fluid" style={{ maxHeight: '380px', objectFit: 'contain' }} />
           </div>
         </Col>
 
@@ -61,7 +61,7 @@ export default function ProductDetails() {
         <Col lg={6} className="text-start">
           <div className="d-flex align-items-center justify-content-start gap-2 mb-3">
             <span className="text-uppercase fw-bold text-success" style={{ fontSize: '0.75rem', letterSpacing: '1px' }}>
-               12 AVAILABLE IN STOCK
+               {product.stock} AVAILABLE IN STOCK
             </span>
             <span style={{ height: '8px', width: '8px', backgroundColor: '#2ecc71', borderRadius: '50%' }}></span>
           </div>
@@ -70,7 +70,7 @@ export default function ProductDetails() {
             {product.category}
           </Badge>
           
-          <h1 className="fw-bold mb-3" style={{ fontSize: '2.5rem', letterSpacing: '-0.5px' }}>{product.title}</h1>
+          <h1 className="fw-bold mb-3" style={{ fontSize: '2.5rem', letterSpacing: '-0.5px' }}>{product.name}</h1>
           
           <div className="d-flex align-items-center justify-content-start gap-2 mb-4">
             <span className="text-muted small fw-medium">({reviews.length} Customer Reviews)</span>
