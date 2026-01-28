@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
@@ -9,14 +9,68 @@ import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 import { ShoppingCart, User, Bell, PackageSearch, LogIn } from "lucide-react";
+import { apiFetch } from "../../api/api";
 
 export default function Header() {
   const auth = useAuth();
   const navigate = useNavigate();
 
-  // --- MOCK DATA ---
-  const cartItemCount = 3;
-  const notificationCount = 5;
+    const [cartItemsCount, setCartItemsCount] = useState<number>(0);
+  
+    useEffect(() => {
+      const loadCart = async () => {
+        try {
+        const data = await apiFetch("/cart/");
+        console.log("CART RESPONSE:", data);
+  
+        if (!data) {
+          setCartItemsCount(0);
+          return;
+        }
+  
+        if (Array.isArray(data.items)) {
+          setCartItemsCount(data.items.length);
+        } else if (Array.isArray(data)) {
+          setCartItemsCount(data.length);
+        } else {
+          setCartItemsCount(0);
+        }
+        } catch (err) {
+        console.error("CART FETCH CRASHED:", err);
+        setCartItemsCount(0);
+        }
+      };
+  
+      loadCart();
+    }, []);
+
+        const [notificationsCount, setNotificationsCount] = useState<number>(0);
+  
+    useEffect(() => {
+      const loadNotifications = async () => {
+        try {
+        const data = await apiFetch("/notifications/");
+  
+        if (!data) {
+          setNotificationsCount(0);
+          return;
+        }
+  
+        if (Array.isArray(data.items)) {
+          setNotificationsCount(data.items.length);
+        } else if (Array.isArray(data)) {
+          setNotificationsCount(data.length);
+        } else {
+          setNotificationsCount(0);
+        }
+        } catch (err) {
+        console.error("NOTIFICATIONS FETCH CRASHED:", err);
+        setNotificationsCount(0);
+        }
+      };
+  
+      loadNotifications();
+    }, []);
 
   return (
     <Navbar expand="lg" className="bg-white border-bottom py-3 mb-4 sticky-top">
@@ -69,13 +123,13 @@ export default function Header() {
                   to="/notifications"
                   className="position-relative p-2">
                   <Bell size={22} strokeWidth={2} className="text-dark" />
-                  {notificationCount > 0 && (
+                  {notificationsCount > 0 && (
                     <Badge
                       pill
                       bg="danger"
                       className="position-absolute top-0 start-100 translate-middle border border-white"
                       style={{ fontSize: "0.6rem", padding: "0.35em 0.5em" }}>
-                      {notificationCount}
+                      {notificationsCount}
                     </Badge>
                   )}
                 </Nav.Link>
@@ -90,13 +144,13 @@ export default function Header() {
                     strokeWidth={2}
                     className="text-dark"
                   />
-                  {cartItemCount > 0 && (
+                  {cartItemsCount > 0 && (
                     <Badge
                       pill
                       bg="primary"
                       className="position-absolute top-0 start-100 translate-middle border border-white"
                       style={{ fontSize: "0.6rem", padding: "0.35em 0.5em" }}>
-                      {cartItemCount}
+                      {cartItemsCount}
                     </Badge>
                   )}
                 </Nav.Link>
