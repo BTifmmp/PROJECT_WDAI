@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Cart from "./pages/Cart";
+import Notifications from "./pages/Notifications";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Routes, Route } from "react-router-dom";
 
@@ -17,6 +19,8 @@ function App() {
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/notifications" element={<Notifications />} />
       </Routes>
       <Footer />
     </div>
