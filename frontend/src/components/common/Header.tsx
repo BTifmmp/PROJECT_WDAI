@@ -65,7 +65,8 @@ export default function Header() {
               <>
                 {/* 1. Notifications */}
                 <Nav.Link
-                  href="#notifications"
+                  as={Link}
+                  to="/notifications"
                   className="position-relative p-2">
                   <Bell size={22} strokeWidth={2} className="text-dark" />
                   {notificationCount > 0 && (
