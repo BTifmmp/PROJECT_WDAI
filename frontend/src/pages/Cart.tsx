@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { apiFetch } from "../api/api";
 
 type CartItem = {
+  id: number;
   product_id: number;
   name: string;
   price: number;
@@ -68,7 +69,7 @@ export default function Cart() {
               {item.price * item.quantity} zł
               <button
                 className="btn btn-sm btn-danger ms-2"
-                onClick={() => removeFromCart(item.product_id)}
+                onClick={() => removeFromCart(item.id)}
               >
                 Usuń
               </button>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, Button, Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { ShoppingCart, Star } from 'lucide-react';
+import { apiFetch } from '../../api/api';
 
 interface ProductProps {
   id: number;
@@ -14,11 +15,18 @@ interface ProductProps {
 
 export default function ProductCard({ id, title, price, description, category, image }: ProductProps) {
   
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    console.log("Added to cart:", id);
-  };
+const handleAddToCart = async (e: React.MouseEvent) => {
+  e.preventDefault();
+  e.stopPropagation();
+
+  await apiFetch('/cart/add', {
+    method: 'POST',
+    body: JSON.stringify({ // 2. Turn the object into a string
+      product_id: id, 
+      quantity: 1
+    })
+  });
+};
 
   return (
     <Link to={`/product/${id}`} style={{ textDecoration: 'none', color: 'inherit' }}>

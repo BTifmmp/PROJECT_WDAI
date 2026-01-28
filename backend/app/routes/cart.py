@@ -47,7 +47,10 @@ def add_to_cart():
 @jwt_required()
 def remove_from_cart(item_id):
     user_id = get_jwt_identity()
-    item = CartItem.query.filter_by(id=item_id, user_id=user_id).first_or_404()
+    item = CartItem.query.filter_by(id=item_id, user_id=user_id).first()
+
+    if not item:
+        return jsonify({"msg": "Przedmiot nie znaleziony"}), 404
     
     db.session.delete(item)
     db.session.commit()

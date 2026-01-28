@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Button, Form, Spinner, Badge, Card } from 'react-bootstrap';
 import { ShoppingCart, ArrowLeft, Star, MessageSquare, Send, Trash2 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
+import { apiFetch } from '../api/api';
 
 export default function ProductDetails() {
   const { token, isAuthenticated, user } = useAuth(); // 'user' może zawierać id zalogowanego
@@ -92,6 +93,16 @@ export default function ProductDetails() {
     }
   };
 
+const handleAddToCart = async () => {
+  await apiFetch('/cart/add', {
+    method: 'POST',
+    body: JSON.stringify({ // 2. Turn the object into a string
+      product_id: product.id, 
+      quantity 
+    })
+  });
+};
+
   if (loading) return <Container className="py-5 text-center"><Spinner animation="border" variant="dark" /></Container>;
   if (!product) return <Container className="py-5">Produkt nie został znaleziony.</Container>;
 
@@ -121,7 +132,7 @@ export default function ProductDetails() {
               <Form.Label className="small fw-bold text-muted">ILOŚĆ</Form.Label>
               <Form.Control type="number" min="1" value={quantity} onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value)))} className="py-2 text-center" />
             </Form.Group>
-            <Button variant="dark" className="px-5 py-2 fw-bold d-flex align-items-center gap-2" style={{ height: '48px' }}>
+            <Button onClick={handleAddToCart} variant="dark" className="px-5 py-2 fw-bold d-flex align-items-center gap-2" style={{ height: '48px' }}>
               DODAJ DO KOSZYKA <ShoppingCart size={20} />
             </Button>
           </div>
