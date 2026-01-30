@@ -24,8 +24,11 @@ def get_notifications():
 def mark_as_read(notif_id):
     user_id = get_jwt_identity()
     notification = Notification.query.filter_by(id=notif_id, user_id=user_id).first_or_404()
+
+    print("here")
     
     notification.is_read = True
+    db.session.add(notification)
     db.session.commit()
     
     return jsonify({"msg": "Powiadomienie przeczytane"}), 200

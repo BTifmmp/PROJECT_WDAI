@@ -9,6 +9,7 @@ import Cart from "./pages/Cart";
 import Notifications from "./pages/Notifications";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Routes, Route } from "react-router-dom";
+import MyOrders from "./pages/OrderHistory";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/notifications" element={<Notifications />} />
+        <Route path="/my-orders" element={<MyOrders />} />
       </Routes>
       <Footer />
     </div>

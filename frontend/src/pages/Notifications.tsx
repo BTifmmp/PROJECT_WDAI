@@ -4,7 +4,7 @@ import { apiFetch } from "../api/api";
 type Notification = {
   id: number;
   message: string;
-  read: boolean;
+  is_read: boolean;
 };
 
 export default function Notifications() {
@@ -28,7 +28,7 @@ export default function Notifications() {
     if (result !== null) {
       setNotifications(prev =>
         prev.map(n =>
-          n.id === id ? { ...n, read: true } : n
+          n.id === id ? { ...n, is_read: true } : n
         )
       );
     }
@@ -45,7 +45,7 @@ export default function Notifications() {
       {notifications.map(n => (
         <div
           key={n.id}
-          className={`alert ${n.read ? "alert-secondary" : "alert-primary"}`}
+          className={`alert ${n.is_read ? "alert-secondary" : "alert-primary"}`}
           style={{ cursor: "pointer" }}
           onClick={() => markAsRead(n.id)}
         >

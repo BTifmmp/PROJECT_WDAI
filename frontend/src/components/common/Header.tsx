@@ -56,13 +56,18 @@ export default function Header() {
           return;
         }
   
-        if (Array.isArray(data.items)) {
-          setNotificationsCount(data.items.length);
-        } else if (Array.isArray(data)) {
-          setNotificationsCount(data.length);
-        } else {
-          setNotificationsCount(0);
-        }
+if (Array.isArray(data.items)) {
+    // Liczymy tylko te, gdzie is_read jest false
+    console.log("CART ITEMS:", data.items);
+    const count = data.items.reduce((acc:any, n:any) => !n.is_read ? acc + 1 : acc, 0);
+    setNotificationsCount(count);
+} else if (Array.isArray(data)) {
+    // To samo dla bezpośredniej tablicy
+    const count = data.reduce((acc, n) => !n.is_read ? acc + 1 : acc, 0);
+    setNotificationsCount(count);
+} else {
+    setNotificationsCount(0);
+}
         } catch (err) {
         console.error("NOTIFICATIONS FETCH CRASHED:", err);
         setNotificationsCount(0);
@@ -165,7 +170,7 @@ export default function Header() {
                   <NavDropdown.Header className="fw-bold">
                     My Account
                   </NavDropdown.Header>
-                  <NavDropdown.Item href="#orders">My Orders</NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to="/my-orders">My Orders</NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item
                     onClick={() => {
